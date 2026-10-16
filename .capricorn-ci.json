@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "steps": [
+    { "name": "fixture-shell-syntax", "run": "sh -n start.sh", "timeout": 60 }
+  ],
+  "image": { "name": "private-git-fixture-20261016", "builder": "dockerfile", "dockerfile": "Dockerfile", "cache": true },
+  "deploy": {
+    "provider": "swarm",
+    "target": {
+      "serviceName": "private-git-fixture-20261016",
+      "replicas": 1,
+      "limitCpu": "0.25",
+      "limitMemory": "128M",
+      "env": { "PORT": "8080" }
+    }
+  }
+}
