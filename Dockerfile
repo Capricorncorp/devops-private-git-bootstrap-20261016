@@ -4,7 +4,7 @@ RUN apk add --no-cache git git-daemon openssl curl \
     && mkdir -p /srv/git /srv/www \
     && chown root:daemon /srv/git \
     && chmod 0750 /srv/git \
-    && ln -s "$(git --exec-path)/git-http-backend" /usr/local/apache2/cgi-bin/git-http-backend \
+    && cp "$(git --exec-path)/git-http-backend" /usr/local/apache2/cgi-bin/git-http-backend \
     && git config --system http.receivepack false \
     && git config --system http.uploadpack true \
     && git config --system --add safe.directory /srv/git/fixture.git

@@ -14,8 +14,8 @@ fail() {
     || fail 'Usage: sh protocol-qc.sh ACTUAL_REPO_BUNDLE EXPECTED_HEAD [LOCAL_IMAGE]'
 [ "$(uname -s)" = Linux ] || fail 'QC is restricted to the local AGOS Linux host.'
 case "$(hostname -s | tr '[:upper:]' '[:lower:]')" in
-    agos) ;;
-    *) fail 'QC is restricted to the local AGOS host (hostname AGOS).' ;;
+    automation-marketing-agos) ;;
+    *) fail 'QC is restricted to the pinned Automation-Marketing-AGOS host.' ;;
 esac
 
 source_bundle=$1
@@ -38,7 +38,11 @@ docker_local() {
 
 container_id=
 cleanup() {
+    status=$?
     if [ -n "$container_id" ]; then
+        if [ "$status" -ne 0 ]; then
+            docker_local logs --tail 30 "$container_id" >&2 || :
+        fi
         docker_local rm --force "$container_id" > /dev/null 2>&1 || :
     fi
 }
